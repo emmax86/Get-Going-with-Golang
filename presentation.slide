@@ -1,0 +1,161 @@
+Get Going with Golang
+A Beginner's Guide
+10 Nov 2016
+Tags: golang, web dev
+
+Steve King, Jr.
+    Lead Development Director, SoDA
+    Software Engineering Intern, PayPal Inc.
+    @stevex86
+
+* Agenda
+- What is Go, and why is it?
+- Features
+- Comparing Go to other languages
+- A Tour of Go
+
+* What is Go, and why is it?
+- Conceived in 2007 at Google as a language they could use at scale
+- First stable release 10 Nov 2009
+- Robert Griesemer, Rob Pike, and Ken Thompson
+- Goals: high scalability and concurrency
+- Open source
+- Highly extensible and powerful compiler
+
+
+* Features
+- Fast compile times
+- Type-safe, systems level language
+- Garbage collected
+- Rigid dependecy declaration
+- Flexibility and ease of development of interpreted languages
+- Raw speed and type safety of compiled languages
+- Highly concurrent
+- Built in support for Unicode
+- Reflection and instrumentation tools are part of the standard library
+- Built in package manager, build system, and testing framework
+
+* Comparing Go to other languages
+.image thing.png
+
+* A Tour of Go
+
+* Playground
+If you don't want to install Go in order to play with it, fear not!
+
+The Go website hosts a [[https://play.golang.org/][Playground]] for developers to write trivial Go code and run it in-browser at `play.golang.org`.
+
+* Hello, World!
+.play code-examples/hello.go
+
+* Variables
+Go is a statically, strongly typed language, similar to Java and C++. All type checks are known and resolved at compile-time.
+
+Go variable declarations are a bit different than what you might be used to. In C-like languages, an object's type precedes its name in declaration. In Go, the variable name precedes its type. Additionally, the `var` keyword is used when declaring new variables.
+
+For example:
+
+.code static_assignment
+
+`x` is declared to be a variable of type `string`
+
+Unlike other languages, Go will trigger a compiler error if a variable is declared but never used.
+
+* Variables
+There is an additional way to declare variables in Go, using the `:=` (colon equals) operator.
+
+`:=` is syntactic sugar for declaring a new variable with an inferred type. Consider the following:
+
+.code implicit_assignment
+
+Once again, `x` is declared to be a new variable of type `string`. However, the type of `x` is inferred to be the same type as the result of the expression on the right-hand side of the assignment.
+
+`:=` is only applicable when you declare a new variable. If you try to use `:=` to assign a variable that already exists within the current scope, it will trigger a compiler error. 
+
+It is idomatic to use := only when the inferred type is obvious to the programmer based on the context of its use. 
+
+* Variables by Example
+.play -edit code-examples/variables.go
+
+* Basic Types
+- signed integers ranging from 8 to 64 bytes in size (by powers of 2)
+- unsinged integers ranging from 8 to 64 bytes in size (by powers of 2)
+- floting point numbers (32 and 64 bytes)
+- complex numbers (64 and 128 bytes)
+- strings
+- arrays and slices (dynamically sized arrays)
+- structs
+- interfaces
+- pointers
+- maps (unordered key-value pairs)
+- channels
+.caption Go does not feature classes, objects, or inheritance 
+
+* Arrays
+.play -edit code-examples/arrays.go
+
+Arrays in Go are almost functionally identical to arrays in other languages.
+
+Rather than the C-like syntax of `T[]`, Go array types take the form of `[SIZE]T`.
+
+An array's type is determined by two things: the type of data int contains, and the size of the array. In other words, a `[5]int` is considered to be a different type than `[6]int`. This makes Go's array type stricter than arrays in other languages, but it means that an array's size is never ambiguous or unknown. 
+
+* Slices
+.play -edit code-examples/slices.go
+
+It is often desirable to have dynamically-sized containers, especially since Go's arrays are so strict. It is idiomatic to use slices when the size of your data is unknown or subject to change.
+
+It is also possible to form slices from ranges of elements from an array or another slice.
+
+* Structs
+.play -edit code-examples/structs.go
+
+There isn't much new to the `struct` type in Go other than the fact that functions can be bound to structs. This syntactic sugar makes `structs` feel more like objects. 
+
+* Packages
+.code code-examples/hello.go /^package/
+
+Executable packages (i.e. packages that are meant to stand alone and run alone) must always have a `main` package.
+
+Library packages (i.e. packages which provide supplemental support to a codebase) need not be executable and can have any name. 
+
+Packages may have the same name, so long as their import paths (or full names) are unique.
+
+.code packages /^github.com/,/^github.com/
+
+Although these packages have the same underlying, their fully qualified packages names are unique.  
+
+* Packages
+
+Go comes with a built in package manager, unlike most other languages.
+
+To install a package, simply use the command
+.code go_get_ex
+
+The package manager will download the source for the package in your Go project directory, compile it, and install it.
+
+Most open-source packages follow this format for package for fully qualified package names:
+
+.code packages /name/
+e.g.
+.code packages /^github/
+* Packages
+Importing packages in Go is simple!
+
+
+* GOPATH
+Environment variable for where all your Go code lies (e.g. `$HOME/GoWorkspace/`)
+.image GOPATH.png _ 600
+
+* Why is all Go code in one folder?
+- Single copy of dependencies
+- Static resolution of dependency hierarchy
+- Simpler to build and run (this is one of the reasons the Go compiler is so fast)
+- Directories mimic the repositories they are stored in
+- Package 
+- Disadvantage: You can't have multiple versions of the same library without additional tweaking
+
+* GOROOT
+- Environment variable for where your Go runtime binaries lie
+- Only necessary when you install Go to a location other than the system default (e.g. `$HOME/Go` instead of `/usr/local/bin/`)
+- Is *not* the root directory of your Go source files

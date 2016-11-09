@@ -107,10 +107,41 @@ It is often desirable to have dynamically-sized containers, especially since Go'
 
 It is also possible to form slices from ranges of elements from an array or another slice.
 
+* Functions
+.play -edit code-examples/functions.go
+
+* Functions
+- Declared by the `func` keyword
+- Call-by-value semantics
+- First-class values, meaning you can store a function in a variable or pass it as a parameter
+- May have multiple return types
+- Function name and parameters precede the return type
+- Support closures
+- Allow Go to be used as a purely functional language
+
+* Pointers
+.play -edit code-examples/pointers.go
+
+Go has full-featured support for pointers, in typical C style. However, it is not necessary to use the -> (arrow) operator in order to access elements of a `struct` pointer. Instead, you may use the `.` (dot) operator. This convenience is borrowed from languages like Java.
+
 * Structs
 .play -edit code-examples/structs.go
 
-There isn't much new to the `struct` type in Go other than the fact that functions can be bound to structs. This syntactic sugar makes `structs` feel more like objects. 
+There isn't much new to the `struct` type in Go other than the fact that functions can be bound to structs. This syntactic sugar makes the usage `structs` similar to objects and classes, except that there is no inheritance. 
+
+* Interfaces
+.play -edit code-examples/interfaces.go
+
+* Interfaces
+Go made a deliberate design decision _not_ to implement classes and object-oriented programming. Its creators were worried that object-oriented programming is prone to architectural flaws in code structure.
+
+`Interfaces` allow us to specify a behavior pattern. Interfaces have no data or state; rather, they declare a series of _behaviors_ and contracts for accessing these behaviors (methods/functions). 
+
+If a struct implements some `interface` method, it is said that it _implements_ that interface.
+
+E.g. on the last slide, `Square` and `Circle` implement the `Shape` interface. 
+
+Interface implementation is implicit in Go; it happens automatically when a type defines all of an interface's functions.
 
 * Packages
 .code code-examples/hello.go /^package/

@@ -4,9 +4,10 @@ A Beginner's Guide
 Tags: golang, web dev
 
 Steve King, Jr.
-    Lead Development Director, SoDA
-    Software Engineering Intern, PayPal Inc.
-    @stevex86
+Lead Development Director, SoDA
+Software Engineering Intern, PayPal Inc.
+https://github.com/stevex86
+@stevex86
 
 * Agenda
 - What is Go, and why is it?
@@ -105,7 +106,9 @@ An array's type is determined by two things: the type of data int contains, and 
 
 It is often desirable to have dynamically-sized containers, especially since Go's arrays are so strict. It is idiomatic to use slices when the size of your data is unknown or subject to change.
 
-It is also possible to form slices from ranges of elements from an array or another slice.
+The syntax for declaring slice types is `[]T`. It is like declaring an array, but the size is not specified. 
+
+It is also possible to form slices from ranges of elements from an array or another slice. These new slices act as references to the underlying array.
 
 * Functions
 .play -edit code-examples/functions.go
@@ -122,7 +125,18 @@ It is also possible to form slices from ranges of elements from an array or anot
 * Pointers
 .play -edit code-examples/pointers.go
 
-Go has full-featured support for pointers, in typical C style. However, it is not necessary to use the -> (arrow) operator in order to access elements of a `struct` pointer. Instead, you may use the `.` (dot) operator. This convenience is borrowed from languages like Java.
+Go has full-featured support for pointers: reference types which allow you to refer to a variable which may exist elsewhere within the program. 
+
+You can use the `&` (ampersand) operator or the `new` keyword to create a pointer.
+
+Go is garbage collected, so you don't have to worry about manually freeing your pointers, unlike C or C++.
+
+* Pointers
+.image stack-vs-heap.gif _ 500
+
+Additionally, like Java, you don't have to worry about whether your memory exists on the heap or the stack. The compiler automatically determines this behind the scenes.
+
+This is one of the most crucial features which gives Go the power of systems languages like C and C++, while maintaining the safety and ease of use of languages like Java.
 
 * Structs
 .play -edit code-examples/structs.go
@@ -130,34 +144,63 @@ Go has full-featured support for pointers, in typical C style. However, it is no
 There isn't much new to the `struct` type in Go other than the fact that functions can be bound to structs. This syntactic sugar makes the usage `structs` similar to objects and classes, except that there is no inheritance. 
 
 * Interfaces
-.play -edit code-examples/interfaces.go
-
-* Interfaces
 Go made a deliberate design decision _not_ to implement classes and object-oriented programming. Its creators were worried that object-oriented programming is prone to architectural flaws in code structure.
 
-`Interfaces` allow us to specify a behavior pattern. Interfaces have no data or state; rather, they declare a series of _behaviors_ and contracts for accessing these behaviors (methods/functions). 
+`Interfaces` allow us to specify behavior patterns for data. Interfaces have no data or state; rather, they declare a series of _behaviors_ and contracts for accessing these behaviors, i.e. methods and functions. 
 
 If a struct implements some `interface` method, it is said that it _implements_ that interface.
 
-E.g. on the last slide, `Square` and `Circle` implement the `Shape` interface. 
-
 Interface implementation is implicit in Go; it happens automatically when a type defines all of an interface's functions.
+ 
+.caption E.g. on the last slide, `Square` and `Circle` implement the `Shape` interface.
+
+* Interfaces
+.play -edit code-examples/interfaces.go
+
+* Interfaces
+Instead of inheritance, Go encourages programmers to exploit the _composition_ pattern.
+
+.image gof.jpg _ 350
+
+.caption For more information about composition, I recommend the (in)famous [[https://www.amazon.com/gp/product/0201633612/][Gang of Four]] design patterns book.
+
+* Maps
+Go has a basic `map` type, similar to the `map` type in C++ or the `HashMap` class in Java.
+
+Maps provide a way to store values by a particular programmer-decided key. As an analogy, imagine using a `string` to access elements of an array instead of `int` values.
+
+* Maps
+.play -edit code-examples/maps.go
+
+The syntax for a `map` type is `map[KEY_TYPE]VALUE_TYPE`, e.g. `map[string]Vertex`.
+
+Key-value pairs in a `map` can be added or deleted at-will; it is a dynamically-sized data structure.
+
+* Goroutines
+Go is designed with concurrency in mind. Goroutines are Go's most basic mechanism for concurrency.
+
+Starting a goroutine is as simple as using the `go` keyword, followed by an function. The function will run concurrently to subsequent instructions.
+
+* Goroutines
+.play -edit code-examples/goroutines.go
+
+* Channels
+Channels are Go's mechanism for passing information between goroutines.
+
+Channels can be thought of as a stream or pipeline for data. Data goes into one side of the pipe and comes out of the other side. 
+
+The basic idea is that whenever you try to extract data out of a channel, the current thread will wait until there is data to extract. Then, execution will continue.
+
+* Channels
+.play -edit code-examples/channels.go
+
+* Channels
+Channels can be buffered, meaning a maximum channel size can be specified. If you attempt to put more data in a channel which is full, the execution of the thread will be paused until more room becomes available.
+
+* Channels
+.play -edit code-examples/buffered-channels.go
 
 * Packages
-.code code-examples/hello.go /^package/
-
-Executable packages (i.e. packages that are meant to stand alone and run alone) must always have a `main` package.
-
-Library packages (i.e. packages which provide supplemental support to a codebase) need not be executable and can have any name. 
-
-Packages may have the same name, so long as their import paths (or full names) are unique.
-
-.code packages /^github.com/,/^github.com/
-
-Although these packages have the same underlying, their fully qualified packages names are unique.  
-
-* Packages
-
 Go comes with a built in package manager, unlike most other languages.
 
 To install a package, simply use the command
@@ -170,8 +213,6 @@ Most open-source packages follow this format for package for fully qualified pac
 .code packages /name/
 e.g.
 .code packages /^github/
-* Packages
-Importing packages in Go is simple!
 
 
 * GOPATH
